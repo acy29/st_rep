@@ -10,7 +10,8 @@ class Orden_CrearController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        // action body
+        $form = new Orden_Form_Crear();
+      	  	echo $form;  
     }
 
 

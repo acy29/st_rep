@@ -30,5 +30,22 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	 $view->headScript()->appendFile('../js/jquery.dataTables.min.js');
     }
   
+  protected function _initAutoload() {
+
+         require_once 'Zend/Loader/Autoloader.php';
+
+         $loader = Zend_Loader_Autoloader::getInstance();
+
+
+         $loader->setFallbackAutoloader(true);
+
+         
+     }
+   
+  protected function _initViewResources() {
+
+         Zend_Layout::startMvc();
+     }
+  
 }
 

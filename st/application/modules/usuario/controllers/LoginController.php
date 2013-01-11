@@ -16,7 +16,9 @@ class Usuario_LoginController extends Zend_Controller_Action
 
     public function loginAction()
     {
+$auth = Zend_Auth::getInstance();
 
+        $auth->clearIdentity();
 
     	$db = Zend_Db_Table::getDefaultAdapter();
 
@@ -38,12 +40,16 @@ class Usuario_LoginController extends Zend_Controller_Action
                 //'MD5(CONCAT(?, password_salt))'
                 );
  
+            //*** valido en la bd el pw y usu dado por el usuario
             $adapter->setIdentity($loginForm->getValue('username'));
             $adapter->setCredential($loginForm->getValue('password'));
  
             $auth   = Zend_Auth::getInstance();
             $result = $auth->authenticate($adapter);
- 
+
+            $auth->getStorage()->write(array("id_role" => 1,"bar" => "foo"));
+            //var_dump($identity);
+             
             if ($result->isValid()) {
                 //$this->_helper->FlashMessenger('Successful Login');
                 echo "fino";
@@ -54,8 +60,6 @@ class Usuario_LoginController extends Zend_Controller_Action
             }
  
         }
- 
-        $this->view->loginForm = $loginForm;
  
     
     }

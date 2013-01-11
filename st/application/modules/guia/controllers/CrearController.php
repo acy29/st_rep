@@ -1,6 +1,6 @@
 <?php
 
-class Orden_CrearController extends Zend_Controller_Action
+class Guia_CrearController extends Zend_Controller_Action
 {
 
     public function init()
@@ -10,8 +10,7 @@ class Orden_CrearController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $form = new Orden_Form_Crear();
-      	 echo $form;  
+        // action body
     }
 
 

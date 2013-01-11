@@ -6,7 +6,7 @@
 	<body>
 
  	<?php
-	        $auth= Zend_Auth::getInstance();
+	        /*$auth= Zend_Auth::getInstance();
 			if (!empty($auth) && ($auth instanceof Zend_Auth)) {  	     
 	            $user= $auth->getStorage()->read();
 	        	$role= $user['id_role'];
@@ -14,7 +14,7 @@
 	        	$bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
 				$db= $bootstrap->getResource('db');
 				$acl= new Login_Acl($db,$role);
-/*
+
 	      echo '<li class="dir"><a href="#">Configuración</a><ul>';
 	      if($acl->isAllowed($role,"roles"))
 	        {
@@ -32,8 +32,8 @@
 				//Menu comandito por centro
 				if($acl->isAllowed($role,"comanditocentro/*"))
 	  			{
-		           echo '<li><a href="/comanditocentro">Crear UBC por centro</a></li>';*/
-	        }
+		           echo '<li><a href="/comanditocentro">Crear UBC por centro</a></li>';
+	        }*/
 
 
 		?>

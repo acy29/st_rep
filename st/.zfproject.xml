@@ -120,6 +120,7 @@
             <dbTableDirectory>
               <dbTableFile dbTableName="Centrosservicio"/>
             </dbTableDirectory>
+            <modelFile modelName="CentrosservicioMapper"/>
           </modelsDirectory>
           <servicesDirectory enabled="false"/>
           <viewsDirectory>

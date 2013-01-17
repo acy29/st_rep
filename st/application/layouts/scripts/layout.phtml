@@ -1,11 +1,20 @@
 
 <html>
 	<head> 
+		<?php echo $this->headLink(); ?>
 		<?php echo $this->headScript(); ?>
+
+		<style type="text/css" title="currentStyle">
+			@import "../../public/css/demo_page.css";
+			@import "../../public/css/demo_table.css";
+		</style>
+
 	</head> 
 	<body>
 
  	<?php
+
+ 	
 	        /*$auth= Zend_Auth::getInstance();
 			if (!empty($auth) && ($auth instanceof Zend_Auth)) {  	     
 	            $user= $auth->getStorage()->read();

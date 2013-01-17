@@ -1,0 +1,26 @@
+.msj_input{
+	margin-top:-3px;
+	color:red;
+
+}
+
+#cliente:hover{
+
+	cursor: hand;
+}
+
+#clientesxcedula .datatables_length,#clientesxcedula .datatables_info {
+	width: 100% !important;
+}
+
+a:link{
+	color: blue;
+	font-weight: bold;
+	text-decoration: none;
+}
+a:hover{
+	color: red;
+}
+a:active{
+	color: red;
+}

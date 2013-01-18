@@ -26,34 +26,44 @@
 	//***al escribir un cedula en el dialog busco en BD
 	function buscarclientesxcedula() { 
 		var id2 = $('#buscarcliente'); 
-		//***remuevo la tabla anterior
-		$( "#clientesxcedula div" ).remove()
+		
+		//***solo tragigo los clientes al darle enter cod=13
+		var evento = window.event;
+		if (evento.keyCode == 13) {
+			//***remuevo la tabla anterior
+			$( "#clientesxcedula div" ).remove()
+			$( "#clientesxcedula h3" ).remove()
 
-		$.get("../cliente/buscar/clientexcedula", { cedula: id2.val() },
-		  function(data){
-		  	if(data !=""){
+			$.get("../cliente/buscar/clientexcedula", { cedula: id2.val() },
+			  function(data){
+			  	if(data !=""){
 
-		  		//***data es una tabla que convertire en jquery data table
-		  		$( "#clientesxcedula" ).append(data);
+			  		//***data es una tabla que convertire en jquery data table
+			  		$( "#clientesxcedula" ).append(data);
 
-				 $.extend( $.fn.dataTable.defaults, {
-				        "bFilter": false,
-				        "bSort": false
-				    } );
+					 $.extend( $.fn.dataTable.defaults, {
+					        "bFilter": false,
+					        "bSort": false
+					    } );
 
-		  		$( "#clientesxcedula table" ).dataTable({
-			       "oLanguage": {
-			            "sLengthMenu": "Mostrando _MENU_ clientes por pagina",
-			            "sZeroRecords": "Nothing found - sorry",
-			            "sInfo": "Mostrando _START_ de _END_ de _TOTAL_ clientes",
-			            "sInfoEmpty": "Mostrando 0 de 0 de 0 clientes",
-			            "sInfoFiltered": "(filtered from _MAX_ total records)"
-			        }
-				});
+			  		$( "#clientesxcedula table" ).dataTable({
+				       "oLanguage": {
+				            "sLengthMenu": "Mostrando _MENU_ clientes por pagina",
+				            "sZeroRecords": "Nothing found - sorry",
+				            "sInfo": "Mostrando _START_ de _END_ de _TOTAL_ clientes",
+				            "sInfoEmpty": "Mostrando 0 de 0 de 0 clientes",
+				            "sInfoFiltered": "(filtered from _MAX_ total records)"
+				        }
+					});
 
-		  	}
+			  	$(".tabla_cliente").button({
+			  		icons: { primary: "ui-icon ui-icon-circle-plus" }});
 
-		  });
+			  	}else
+			  		$( "#clientesxcedula" ).append("<h3>No hay clientes con esta ci</h3>")
+
+			  });
+		}
 
 	}
 
@@ -62,6 +72,7 @@
 		 var tractual = $( "#clientesxcedula table tr")[i];
 		 $("#cliente").val(tractual.children[1].innerText);
 		 identificarcliente();
+		 $( "#clientesxcedula" ).dialog( "destroy" );
 	}
 
 	//***pinto el nombre y apellido del cliente dado la cedula

@@ -24,7 +24,7 @@ class Orden_Model_Orden
 		//$stmt = $db->query("select * from crear_rol(?,?)", $spParams);  
 		  
 		//Fetches a row from the result set  
-		//return $stmt->fetch();   
+		return $stmt->fetch();   
 		  
 		//Returns an array containing all of the result set rows  
 		//return $stmt->fetchAll();  

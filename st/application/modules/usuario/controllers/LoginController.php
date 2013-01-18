@@ -16,22 +16,14 @@ class Usuario_LoginController extends Zend_Controller_Action
 
     public function loginAction()
     {
-$auth = Zend_Auth::getInstance();
 
-        $auth->clearIdentity();
-
-    	$db = Zend_Db_Table::getDefaultAdapter();
-
-
- 		//$stmt = $db->query("select * from users");
-
-
- 
+        $this->logoutAction();
         $loginForm = new Usuario_Form_Login();
  
         if ($loginForm->isValid($_POST)) {
  
  			//*** defino el adaptador
+            $db = Zend_Db_Table::getDefaultAdapter();
             $adapter = new Zend_Auth_Adapter_DbTable(
                 $db,
                 'users',
@@ -39,16 +31,29 @@ $auth = Zend_Auth::getInstance();
                 'password'
                 //'MD5(CONCAT(?, password_salt))'
                 );
- 
-            //*** valido en la bd el pw y usu dado por el usuario
-            $adapter->setIdentity($loginForm->getValue('username'));
-            $adapter->setCredential($loginForm->getValue('password'));
- 
+            //*** valido en la bd el pw y usu
+            $username = $this->getRequest()->getParam('username');
+            $password = $this->getRequest()->getParam('password');
+
+            $user = new Usuario_Model_Users();
+            $rol_id = $user->getRoleId($username);
+
+            //*** autenticacion
+            $adapter->setIdentity($username);
+            $adapter->setCredential($password);
             $auth   = Zend_Auth::getInstance();
             $result = $auth->authenticate($adapter);
 
-            $auth->getStorage()->write(array("id_role" => 1,"bar" => "foo"));
-            //var_dump($identity);
+            //*** parametros op en auth
+            $data= array(
+                'username' => $username,
+                'id_role'  => $rol_id,
+                'role'  => $user->getRole($rol_id)
+            );
+
+            //*** escribo en la sesion
+            $auth->getStorage()->write($data);
+            var_dump($auth->getStorage()->read());
              
             if ($result->isValid()) {
                 //$this->_helper->FlashMessenger('Successful Login');
@@ -57,6 +62,7 @@ $auth = Zend_Auth::getInstance();
                 return;
             }else{
             	echo "error";
+                $this->_redirect('/');
             }
  
         }
@@ -64,6 +70,14 @@ $auth = Zend_Auth::getInstance();
     
     }
 
+    public function logoutAction()
+    {
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        $auth = Zend_Auth::getInstance();
+
+        $auth->clearIdentity();
+        //$this->_redirect('/');
+    }
 
 }
 

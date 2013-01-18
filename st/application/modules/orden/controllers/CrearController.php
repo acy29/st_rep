@@ -44,7 +44,7 @@ class Orden_CrearController extends Zend_Controller_Action
 	}
 
     public function testAction(){
-    	$this->view->headScript()->appendFile('../../js/jquery.tools.min.js');
+    	//$this->view->headScript()->appendFile('../../js/jquery.tools.min.js');
     	$form = new Orden_Form_Test();
     	// Form has not been submitted - pass to view and return
     	echo !$this->getRequest()->isPost();
@@ -55,7 +55,7 @@ class Orden_CrearController extends Zend_Controller_Action
 	    }
 	     // Form has been submitted - run data through preValidation()
 	    $form->preValidation($_POST);
-	    
+
 	     // If the form doesn't validate, pass to view and return
 	    if (!$form->isValid($_POST)) {
 	      $this->view->form = $form;

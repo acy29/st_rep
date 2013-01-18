@@ -21,6 +21,7 @@ class Orden_Form_Crear extends Zend_Form
 		$group->setLabel('Operadora');
 		
 		$group = new Zend_Form_Element_Text('cliente');
+		$group->setAttrib('readonly',true);
 		$form->addElement($group);
 		$group->setLabel('Cliente');	
 		//$form->addDecorator(array('a' => 'HtmlTag'), array('tag' => 'a', 'class' => 'hola'));	

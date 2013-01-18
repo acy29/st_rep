@@ -5,7 +5,6 @@ class Orden_CrearController extends Zend_Controller_Action
 
     public function init()
     {
-        /* Initialize action controller here */
     }
 
     public function indexAction()
@@ -14,7 +13,7 @@ class Orden_CrearController extends Zend_Controller_Action
       	echo $form;  
     }
 
-	public function guardarAction()
+    public function guardarAction()
     {
        	$this->_forward('index','crear');
 	   	$form = new Orden_Form_Crear();
@@ -43,4 +42,10 @@ class Orden_CrearController extends Zend_Controller_Action
 			//$this->view->mensaje =  "\"A Ocurrido un error; cliente no encontrado\"";   
     }
 }
+
+
+
+
+
+
 

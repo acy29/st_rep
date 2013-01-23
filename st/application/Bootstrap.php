@@ -14,25 +14,29 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
          $test_loader = new Zend_Application_Module_Autoloader( array(   'namespace' => 'Acl','basePath'  => APPLICATION_PATH . '/modules/acl'
           ));
 
+         $test_loader = new Zend_Application_Module_Autoloader( array(   'namespace' => 'Contenedores','basePath'  => APPLICATION_PATH . '/modules/contenedores'
+          ));
+
   }
 
   protected function _initViewHelpers() { 
       $this->bootstrap('layout');     
        
       $layout = $this->getResource('layout'); 
-       $view = $layout->getView(); 
-       $view->doctype('XHTML1_STRICT'); 
-       $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8'); 
-       
-       $view->headTitle('SI'); 
+      $view = $layout->getView(); 
+      $view->doctype('XHTML1_STRICT'); 
+      $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8'); 
+
+      $view->headTitle('Inusual'); 
 
       $view->headLink(array('rel'  => 'favicon','href' => '/img/favicon.ico',), 'PREPEND')
             ->appendStylesheet('/st_rep/st/public/css/estilo.css')
             ->prependStylesheet( '/st_rep/st/public/css/ui-lightness/jquery-ui-1.9.2.custom.min.css', 'screen',true,array('id' => 'my_stylesheet'));
             
 
-    	 $view->headScript()->appendFile('/st_rep/st/public/js/jquery.tools.min.js');
-    	 $view->headScript()->appendFile('/st_rep/st/public/js/jquery.dataTables.min.js');
+    	 //$view->headScript()->appendFile('/st_rep/st/public/js/jquery.tools.min.js');
+       $view->headScript()->appendFile('/st_rep/st/public/js/jquery.min.js');
+    	 //$view->headScript()->appendFile('/st_rep/st/public/js/jquery.dataTables.min.js');
        $view->headScript()->appendFile('/st_rep/st/public/js/jquery-ui-1.9.2.custom.min.js');
 
        //***helper_cliente cliente buscar

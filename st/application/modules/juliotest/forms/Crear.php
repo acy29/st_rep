@@ -1,6 +1,6 @@
 <?php
 
-class Orden_Form_Crear extends Zend_Form
+class Orden_Form_Test extends Zend_Dojo_Form
 {
 
     public function init()
@@ -8,7 +8,7 @@ class Orden_Form_Crear extends Zend_Form
 		// Dojo-enable the form:
         Zend_Dojo::enableForm($this);
 
-		$this->setAction('/st_rep/st/public/orden/crear/post')->setMethod('post');
+		$this->setAction('/st_rep/st/public/orden/crear/guardar')->setMethod('post');
 
 		$this->setAttrib('class', 'Orden_this');
 
@@ -56,7 +56,6 @@ class Orden_Form_Crear extends Zend_Form
 		$this->addElement($group);
 		
 		$group = new Zend_Form_Element_Text('cliente');
-
 		$group->setLabel('Cliente');	
 		$group->setDecorators(array(
                    'ViewHelper',
@@ -75,6 +74,8 @@ class Orden_Form_Crear extends Zend_Form
 			->setDecorators(array(
 	               'FormElements',
 	               array(array('data'=>'HtmlTag'),array('tag'=>'table')),
+	               //array(array('data'=>'HtmlTag'),array('tag'=>'table')),
+	               //array('legend',array('tag'=>'table')),
 	               'Fieldset'
 	        ));
 
@@ -83,14 +84,67 @@ class Orden_Form_Crear extends Zend_Form
         	$marcas->select()->order('NombreMarca')
         	)->toArray();
         $select= array();
-        $select[0]='(Seleccione una marca)';
 		foreach ($rows as $rowArray) {
-			$select[$rowArray['CodMarca']]=$rowArray['NombreMarca'];
+			$select[$rowArray['CodMarca']]=$rowArray['CodMarca'];
 		}
 
-		$group = new Zend_Form_Element_Select('marca');
+		$group = new Zend_Dojo_Form_Element_ComboBox('marca');
 		$group->setLabel('Marca');
 		$group->setMultiOptions($select);
+		/*$group->setAttrib('onchange','
+			dojo.require("dijit.form.FilteringSelect");
+			dojo.require("dojo.parser");
+			dojo.require("dojo.data.ItemFileReadStore");
+			dojo.xhrGet({
+				url: "crear/tecnologia",
+				content: { CodMarca:marca.value } ,
+				load: function(data, ioArgs) {
+					console.warn(data);
+				},
+				error: function(data,ioArgs) {
+					console.warn("error");
+				}
+            });');*/	
+		$group->setDecorators(array(
+                   'DijitElement',
+                   'Description',
+                   'Errors',
+                   array(array('data'=>'HtmlTag'), array('tag' => 'td')),
+                   array('Label', array('tag' => 'td')),
+                   array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
+           ));
+		$this->addElement($group);
+		
+		$group = new Zend_Dojo_Form_Element_FilteringSelect('tecnologia');
+		$group->setLabel('Tecnologia');
+		$group->setAutocomplete(true)
+		    ->setRequired(true);
+		//$group->setAttrib('store','{"identifier":"CodTecnologia","items":[{"CodTecnologia":1,"NombreTecnologia":"CDMA"},{"CodTecnologia":2,"NombreTecnologia":"GSM"}],"label":"NombreTecnologia"}');
+		//$group->setAttrib('dojoType','dijit.form.FilteringSelect');
+		$group->setStoreId('suburbsStore');
+		$group->setStoreType('dojo.data.ItemFileReadStore');
+		$group->setStoreParams(array('url' =>"crear/tecnologia" ));
+		$group->setDijitParam('searchAttr', 'name');
+		$group->setDecorators(array(
+                   'DijitElement',
+                   'Description',
+                   'Errors',
+                   array(array('data'=>'HtmlTag'), array('tag' => 'td')),
+                   array('Label', array('tag' => 'td')),
+                   array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
+           ));
+		/*$group->setAttrib('onLoad','dojo.addOnLoad(function () {
+
+			dijit.byId("tecnologia").store = new dojo.data.ItemFileReadStore({url: "crear/tecnologia?CodMarca=" + dojo.byId("marca").value});
+				dojo.connect(dijit.byId("marca"), "onChange", function (val) {
+					dijit.byId("tecnologia").query.CodTenoclogia = val || "*";
+				});
+
+			});');*/
+		$this->addElement($group);
+		
+		$group = new Zend_Form_Element_Select('modelo');
+		$group->setLabel('Modelo');
 		$group->setDecorators(array(
                    'ViewHelper',
                    'Description',
@@ -101,26 +155,17 @@ class Orden_Form_Crear extends Zend_Form
            ));
 		$this->addElement($group);
 		
-		$group = new Zend_Form_Element_hidden('tecnologiahidden');
+		$group = new Zend_Form_Element_Select('color');
+		$group->setLabel('Color');
 		$group->setDecorators(array(
                    'ViewHelper',
                    'Description',
                    'Errors',
+                   array(array('data'=>'HtmlTag'), array('tag' => 'td')),
+                   array('Label', array('tag' => 'td')),
                    array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
            ));
 		$this->addElement($group);
-
-		$datosequipo=$this->addDisplayGroup(array('marca','tecnologiahidden'), 'espcequip', array("legend" => "Especificaciones del Equipo"));		
-
-		$this
-			->espcequip
-			->setDecorators(array(
-	               'FormElements',
-	               array(array('data'=>'HtmlTag'),array('tag'=>'table')),
-	               //array(array('data'=>'HtmlTag'),array('tag'=>'table')),
-	               //array('legend',array('tag'=>'table')),
-	               'Fieldset'
-	        ));
 		
 		$group = new Zend_Form_Element_Text('orden_externa');
 		$group->setLabel('Orden Externa');
@@ -255,7 +300,7 @@ class Orden_Form_Crear extends Zend_Form
            ));
 		$this->addElement($group);
 
-		$datosequipo=$this->addDisplayGroup(array('orden_externa','fecha_orden_externa'
+		$datosequipo=$this->addDisplayGroup(array('marca', 'tecnologia','modelo','color', 'orden_externa','fecha_orden_externa'
 		,'tipo_ingreso','sintoma', 'condiciones','garantia','seriales','imei1', 'imei2','imei3','imei4', 'imei5'), 'datosequip', array("legend" => "Datos del Equipo"));		
 
 		$this
@@ -334,146 +379,17 @@ class Orden_Form_Crear extends Zend_Form
 	               array(array('data'=>'HtmlTag'),array('tag'=>'table')),
 	               'Fieldset'
 	        ));
+		//$this->addDecorator(array('div' => 'HtmlTag'), array('tag' => 'div', 'class' => 'accesorios'));
 		$submit = new Zend_Form_Element_Submit('submit');
 		$this->addElement($submit);
 		$submit->setLabel('Registrar Orden');
 		$this->submit->setValue("Registrar Orden");	 
+		/*$this->setAttrib('onLoad','dojo.addOnLoad(function () {
+			dijit.byId("tecnologia").store = new dojo.data.ItemFileReadStore({url: "crear/tecnologia?CodMarca=" + dojo.byId("marca").value});
+				dojo.connect(dijit.byId("marca"), "onChange", function (val) {
+					dijit.byId("tecnologia").query.property_1 = val || "*";
+				});
+			});');*/
 	}
-
-	/**
-   * After post, pre validation hook
-   *
-   * Finds all fields where name includes 'newName' and uses addNewField to add
-   * them to the form object
-   *
-   * @param array $data $_GET or $_POST
-   */
-  public function preValidation(array $data) { 
-    // array_filter callback
-    function findFields($field) {
-      // return field names that include 'newName'
-		if (strpos($field, 'tecnologia') !== false) {   
-			return $field;
-		}
-		if (strpos($field, 'modelo') !== false) {  
-			return $field;
-		}
-		if (strpos($field, 'color') !== false) {
-			return $field;
-		}
-    }
-   
-    // Search $data for dynamically added fields using findFields callback
-    $newFields = array_filter(array_keys($data), 'findFields');
-    foreach ($newFields as $fieldName) {
-      // strip the id number off of the field name and use it to set new order
-		if (strpos($fieldName, 'tecnologia') !== false && strcmp($fieldName, 'tecnologiahidden')!=0) {
-			$this->addtecnologia($data[$fieldName],$data['marca']);
-		}else if (strpos($fieldName, 'modelo') !== false) {
-			$this->addmodelo($data[$fieldName],$data['marca'],$data['tecnologia']);
-		}else if (strpos($fieldName, 'color') !== false) {
-			$this->addcolor($data[$fieldName],$data['modelo']);
-		}
-    }
-  }
- 
-  /**
-   * Adds new fields to form
-   *
-   * @param string $name
-   * @param string $value
-   * @param int    $order
-   */
-  public function addtecnologia($value,$marca) {
-  		$centros = new Zend_Db_Table('tecnologias');
-        $rows = $centros->fetchAll(
-				$centros->select()->from(array("t" => "tecnologias"), array("t.CodTecnologia","t.NombreTecnologia"))
-                                 ->join(array('mt' => "marcas_tecnologias"),"t.CodTecnologia = mt.CodTecnologia",array())
-                                 ->where("t.CodTecnologia in (select mt.CodTecnologia from marcas_tecnologias where mt.CodMarca=$marca)")
-                                 ->order('t.NombreTecnologia asc')
-        	)->toArray();
-        //creo el arreglo de options
-        $select= array();
-        $select[0]='(Seleccione una tecnologia)';
-		foreach ($rows as $rowArray) {
-			$select[$rowArray['CodTecnologia']]=$rowArray['NombreTecnologia'];
-		}
-		$element = new Zend_Form_Element_Select("tecnologia");
-		$element->setRequired(true)->setLabel('Tecnologia');
-		$element->setMultiOptions($select);
-		$element->setValue($value);
-		$element->setAttrib('onChange','
-          ajaxModeloField();');
-		$element->setDecorators(array(
-                   'ViewHelper',
-                   'Description',
-                   'Errors',
-                   array(array('data'=>'HtmlTag'), array('tag' => 'td')),
-                   array('Label', array('tag' => 'td')),
-                   array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
-           ));
-		$this->espcequip->addElement($element);
-  }
-
-  public function addmodelo($value, $marca,$tecnologia) {
-  		$centros = new Zend_Db_Table('modelos');
-        $rows = $centros->fetchAll(
-				$centros->select()->from(array("m" => "modelos"), array("m.CodModelo","m.NombreModelo"))
-                                 ->where("CodMarca=".$marca)
-                                 ->where("CodTecnologia=".$tecnologia)
-                                 ->order('m.NombreModelo asc')
-        	)->toArray();
-        //creo el arreglo de options
-        $select= array();
-        $select[0]='(Seleccione una modelo)';
-		foreach ($rows as $rowArray) {
-			$select[$rowArray['CodModelo']]=$rowArray['NombreModelo'];
-		}
-		$element = new Zend_Form_Element_Select("modelo");
-		$element->setRequired(true)->setLabel('Modelo');
-		$element->setMultiOptions($select);
-		$element->setValue($value);
-		$element->setAttrib('onChange','
-          ajaxColorField();');
-		$element->setDecorators(array(
-                   'ViewHelper',
-                   'Description',
-                   'Errors',
-                   array(array('data'=>'HtmlTag'), array('tag' => 'td')),
-                   array('Label', array('tag' => 'td')),
-                   array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
-           ));
-		$this->espcequip->addElement($element);
-  }
-
-  public function addcolor($value, $modelo) {
-  	$centros = new Zend_Db_Table('colores');
-        //$modelo = 1;//$this->_getParam('CodModelo', null);
-        $rows = $centros->fetchAll(
-				$centros->select()->from(array("c" => "colores"), array("c.CodColor","c.NombreColor"))
-                                 ->join(array('mc' => "modelos_colores"),"c.CodColor = mc.CodColor",array())
-                                 ->where("c.CodColor in (select mc.CodColor from modelos_colores where mc.CodModelo=$modelo)")
-                                 ->order('c.NombreColor asc')
-        	)->toArray();
-        //creo el arreglo de options
-        $select= array();
-        $select[0]='(Seleccione una Color)';
-		foreach ($rows as $rowArray) {
-			$select[$rowArray['CodColor']]=$rowArray['NombreColor'];
-		}
-    	$element = new Zend_Form_Element_Select("color");
-		$element->setRequired(true)->setLabel('Color');
-		$element->setMultiOptions($select);
-		$element->setValue($value);
-		$element->setDecorators(array(
-                   'ViewHelper',
-                   'Description',
-                   'Errors',
-                   array(array('data'=>'HtmlTag'), array('tag' => 'td')),
-                   array('Label', array('tag' => 'td')),
-                   array(array('row'=>'HtmlTag'),array('tag'=>'tr'))
-           ));
-		$this->espcequip->addElement($element);
-  }
 }
 

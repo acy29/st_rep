@@ -43,10 +43,10 @@ class Cliente_BuscarController extends Zend_Controller_Action
 
     public function buscar_clientexcedula($cedula)
     {
-        $db = new Zend_Db_Table("cliente");
-        $cliente = $db->fetchAll($db->select()->where("documento = ?",$cedula))->toArray();
-        if(isset($cliente[0]['nombre']))
-            return $cliente[0]['nombre']." ".$cliente[0]['apellido'];
+        $db = new Zend_Db_Table("Clientes");
+        $cliente = $db->fetchAll($db->select()->where("CodCliente = ?",$cedula))->toArray();
+        if(isset($cliente[0]['NombreCliente']))
+            return $cliente[0]['NombreCliente'];
         else
             return "";
     }

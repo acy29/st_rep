@@ -14,11 +14,11 @@ class Zend_Controller_Action_Helper_ClientesxCedula extends Zend_Controller_Acti
     {
         if(is_numeric($cedula)) {
 
-            $db = new Zend_Db_Table("cliente");
+            $db = new Zend_Db_Table("Clientes");
             $ci = "%".$cedula."%";
-            $cliente = $db->fetchAll($db->select()->where("documento LIKE ?",$ci))->toArray();
+            $cliente = $db->fetchAll($db->select()->where("CodCliente LIKE ?",$ci))->toArray();
 
-            if(isset($cliente[0]['nombre'])){//*** me devolvio algo la consulta
+            if(isset($cliente[0]['NombreCliente'])){//*** me devolvio algo la consulta
 
                 $dialog = "<div>"
                             ."<table class='display' cellspacing='0' cellpadding='3' width='100%' style='width: 0px;''>"
@@ -30,8 +30,8 @@ class Zend_Controller_Action_Helper_ClientesxCedula extends Zend_Controller_Acti
                 foreach ($cliente as $c)
                 {
                     $dialog .= "<tr>"
-                                ."<td>".$c['nombre']." ".$c['apellido']."</td>"
-                                ."<td>".$c['documento']."</td>"
+                                ."<td>".$c['NombreCliente']."</td>"
+                                ."<td>".$c['CodCliente']."</td>"
                                 ."<td><a class='tabla_cliente' href='javascript:agregarcliente($i)' >Agregar</a></td>"
                               ."</tr>";
                     $i++;

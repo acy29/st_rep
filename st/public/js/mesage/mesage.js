@@ -80,3 +80,48 @@
       $.noty.closeAll();
     }, 10000);
   }
+
+  function confirm(message) {
+    var n = noty({
+      text: message,
+      type: 'alert',
+      dismissQueue: true,
+      layout: 'center',
+      theme: 'defaultTheme',
+      buttons: [
+        {addClass: 'btn btn-primary', text: 'Ok', onClick: function($noty) {
+            $noty.close();
+            noty({dismissQueue: true, layout: 'center', theme: 'defaultTheme', text: 'Ha confirmado la operacion', type: 'success'});
+            setTimeout(function() {
+              $.noty.closeAll();
+              $("#codOrden").val($("#Orden").text());
+              $("#set_form").submit();
+            }, 2000);
+          }
+        },
+        {addClass: 'btn btn-danger', text: 'Cancelar', onClick: function($noty) {
+            $noty.close();
+            noty({dismissQueue: true, layout: 'center', theme: 'defaultTheme', text: 'Ha cancelado la operacion', type: 'error'});
+            setTimeout(function() {
+              $.noty.closeAll();
+            }, 2000);
+          }
+        }
+      ]
+    });
+  }
+
+  function error_op(type) {
+    var n = noty({
+      text: type,
+      type: 'error',
+      dismissQueue: true,
+      layout: 'center',
+      theme: 'defaultTheme'
+    });
+    setTimeout(function() {
+      $.noty.closeAll();
+    }, 10000);
+  }
+
+

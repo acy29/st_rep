@@ -14,7 +14,7 @@ class Contenedores_IndexController extends Zend_Controller_Action
       	echo $form; 
     }
 
-    public function postAction()
+    public function searchAction()
     {
         //pintamos el formulario    
         $form = new Contenedores_Form_Agregar();
@@ -36,7 +36,6 @@ class Contenedores_IndexController extends Zend_Controller_Action
                             ->where("Serial1 =?",$search);
                 $rows = $select->query()->fetchAll();
                 if( sizeof($rows)<1){
-
                     return;
                 }else{
                 $search=$rows[0]["CodOrden"];
@@ -63,23 +62,33 @@ class Contenedores_IndexController extends Zend_Controller_Action
 
         //imprimimos la orden consultada
         $this->_helper->PrintOrdenes->printOrdenes($rows[0],$accesorios["accesorios"]);
-        $contenedor=new Contenedores_Model_Contenedor();
+        $contenedor=new Contenedores_Form_Paquete();
         if(sizeof($contenedor->getByCodDestino($rows[0]["CodCentro"]))>0){
             $contenedorFinal=$contenedor->getByCodDestino($rows[0]["CodCentro"]);
-            echo "Contenedor>".$contenedorFinal[0]["CodContenedor"];
+            $this->view->msj_confirm= "Coloque la orden en el contenedor ".$contenedorFinal[0]["CodContenedor"];
+            $form = new Contenedores_Form_Test  ();
+            echo $form; 
         }else{
             $contenedorFinal=$contenedor->getEmpty();
-            echo "Contenedor>".$contenedorFinal[0]["CodContenedor"];
+            if(sizeof($contenedorFinal)<1){
+                $this->view->msj_error_op= "No hay contenedores disponibles, vacie uno e intente de nuevo";
+            }else{
+                $this->view->msj_confirm= "Coloque la orden en el contenedor ".$contenedorFinal[0]["CodContenedor"];
+            }
         }
     }
 
-    public function detailsAction()
+    public function postAction()
     {
-    	$centros = new Zend_Db_Table('Contenedores');
-        $rows = $centros->fetchAll(
-        	)->toArray();
-		$this->view->assign((array) $rows);
+        //obtenemos el parametro de busqueda
+        $CodOrden=$_POST["codOrden"];
+
+        //agregamos la orden al contenedor
+        $contenedor=new Contenedores_Model_Contenedor();
+        $msj_notification=$contenedor->AddOrden($CodOrden);
+        $this->_redirect("contenedores/index?msj_notification=$msj_notification");
     }
+
 }
 
 

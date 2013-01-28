@@ -6,11 +6,9 @@ class Contenedores_Form_Agregar extends Zend_Form
     public function init()
     {
 		// Dojo-enable the form:
-        Zend_Dojo::enableForm($this);
+    Zend_Dojo::enableForm($this);
 
-		$this->setAction('/st_rep/st/public/contenedores/index/post')->setMethod('post');
-
-		$this->setAttrib('class', 'Orden_this');
+		$this->setAction('/st_rep/st/public/contenedores/index/search')->setMethod('post');
 		
 		$group = new Zend_Form_Element_Text('search');
 		$group->setLabel('Serial o Numero de Orden');		

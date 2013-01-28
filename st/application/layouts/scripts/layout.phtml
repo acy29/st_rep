@@ -4,48 +4,28 @@
 		<?php echo $this->headScript(); ?>
 
 		<style type="text/css" title="currentStyle">
-			@import "../../public/css/demo_page.css";
-			@import "../../public/css/demo_table.css";
+			@import "/st_rep/st/public/css/demo_page.css";
+			@import "/st_rep/st/public/css/demo_table.css";
 		</style>
+
+		<script>
+			 $(document).ready(function() {
+			 	if( "<?php echo $this->msj_notification ?>" != "")
+			 		notification("<?php echo $this->msj_notification ?>");
+			 	if( "<?php echo $this->msj_error ?>" != "")
+			 		error("<?php echo $this->msj_error ?>");
+			});
+		</script>
 
 	</head> 
 	<body>
-
- 	<?php
-
- 	
-	        /*$auth= Zend_Auth::getInstance();
-			if (!empty($auth) && ($auth instanceof Zend_Auth)) {  	     
-	            $user= $auth->getStorage()->read();
-	        	$role= $user['id_role'];
-	        	//var_dump($user);
-	        	$bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
-				$db= $bootstrap->getResource('db');
-				$acl= new Login_Acl($db,$role);
-
-	      echo '<li class="dir"><a href="#">Configuración</a><ul>';
-	      if($acl->isAllowed($role,"roles"))
-	        {
-	             echo '<li><a href="/roles">Mensaje de Bienvenida</a></li>';
-	        }
-	      echo '</ul></li>';
-
-	      echo '<li class="dir"><a href="#">Comandito (UBC)</a><ul>';
-				//Menu comandito por mesa
-				if($acl->isAllowed($role,"comandito/*"))
-	  			{
-		           echo '<li><a href="/comandito">Crear UBC por mesa</a></li>';
-	        }
-				
-				//Menu comandito por centro
-				if($acl->isAllowed($role,"comanditocentro/*"))
-	  			{
-		           echo '<li><a href="/comanditocentro">Crear UBC por centro</a></li>';
-	        }*/
-
-
-		?>
-
-		<?php echo $this->layout()->content; ?>
+		<!--<header>
+			<a href="/st_rep/st/public/login/login/logout">Cerrar Sesión</a>
+			<a href="/st_rep/st/public/login/login/login">Iniciar Sesión</a>
+		</header>-->
+		<section>
+			<?php echo $this->layout()->content; ?>
+		</section>
+		
 	</body> 
 </html>

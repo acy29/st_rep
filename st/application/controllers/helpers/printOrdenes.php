@@ -5,7 +5,7 @@ class Zend_Controller_Action_Helper_PrintOrdenes extends Zend_Controller_Action_
     function printOrdenes($orden,$Accesorios){
     	echo 	"<table>".
 	    			"<tr>".
-		    			"<td>Codigo</td><td>".$orden["CodOrden"]."</td>".
+		    			"<td>Codigo</td><td id='Orden'>".$orden["CodOrden"]."</td>".
 	    			"</tr>".
 		    		"<tr>".
 		    			"<td>Tipo</td><td>".$orden["NombreTipoEquipo"]."</td>".

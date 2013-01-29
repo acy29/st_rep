@@ -62,11 +62,11 @@ class Contenedores_IndexController extends Zend_Controller_Action
 
         //imprimimos la orden consultada
         $this->_helper->PrintOrdenes->printOrdenes($rows[0],$accesorios["accesorios"]);
-        $contenedor=new Contenedores_Form_Paquete();
+        $contenedor=new Contenedores_Model_Contenedor();
         if(sizeof($contenedor->getByCodDestino($rows[0]["CodCentro"]))>0){
             $contenedorFinal=$contenedor->getByCodDestino($rows[0]["CodCentro"]);
             $this->view->msj_confirm= "Coloque la orden en el contenedor ".$contenedorFinal[0]["CodContenedor"];
-            $form = new Contenedores_Form_Test  ();
+            $form = new Contenedores_Form_CrearPaquete();
             echo $form; 
         }else{
             $contenedorFinal=$contenedor->getEmpty();
@@ -74,6 +74,8 @@ class Contenedores_IndexController extends Zend_Controller_Action
                 $this->view->msj_error_op= "No hay contenedores disponibles, vacie uno e intente de nuevo";
             }else{
                 $this->view->msj_confirm= "Coloque la orden en el contenedor ".$contenedorFinal[0]["CodContenedor"];
+                $form = new Contenedores_Form_CrearPaquete();
+                echo $form; 
             }
         }
     }

@@ -61,28 +61,21 @@ class Contenedores_Model_Contenedor
 					->from(array("o" => "Ordenes"), array("o.*"))
 					->where("o.CodOrden in (select ce.CodOrden from Contenedores_Ordenes ce where ce.CodContenedor=".$CodContenedor.")")
 		    	)->toArray();
-	        $paquetes_Equipos = new Zend_Db_Table('Paquetes_Equipos');
 	        foreach ($ordenes as $orden) {
-	        	$data = array('CodPaquete'=>$CodPaquete,
-				           'CodEquipo'=>$orden['CodEquipo'],
-				           'Login'=>'ROSA.JAIMES',
-				           'Recibido'=>0,
-				           'CodAlmacen'=>3,
-				           'CodStatus'=>12,);
-				$paquetes_Equipos->insert($data);
+				$stmt3 = $db->query("exec sp_InsertPaqueteOrden ".$CodPaquete.",".$orden['CodOrden'].",'ROSA.JAIMES'");
 	        }
 	        //creamos el envio
 	        $sql="declare @p1 int;EXECUTE sp_InsertEnvio @p1 output,160,".$rows["CodDestino"].",'ROSA.JAIMES' ";
-			$stmt3 = $db->query($sql);
-			$stmt4=$db->query("select @@IDENTITY as id");
-			$CodEnvio= $stmt4->fetch();  
+			$stmt4 = $db->query($sql);
+			$stmt5=$db->query("select @@IDENTITY as id");
+			$CodEnvio= $stmt5->fetch();  
 			$CodEnvio=$CodEnvio["id"];
 
 			//asociamos los paquete con el envio
-			$stmt5 = $db->query("exec sp_InsertEnvioPaquete ".$CodEnvio.",".$CodPaquete);
+			$stmt6 = $db->query("exec sp_InsertEnvioPaquete ".$CodEnvio.",".$CodPaquete);
 
 			// actualizamos el envio con numero de guia y el tipo de transporte
-			$stmt6 = $db->query("exec sp_UpdateEnvio ".$CodEnvio.",".$Transporte.",".$NoGuia.",".$Observaciones.",'ROSA.JAIMES'");
+			$stmt7 = $db->query("exec sp_UpdateEnvio ".$CodEnvio.",".$Transporte.",".$NoGuia.",".$Observaciones.",'ROSA.JAIMES'");
 
 			//limpiamos el contenedor de ordenes
 			$contenedores = new Zend_Db_Table('Contenedores_Ordenes');

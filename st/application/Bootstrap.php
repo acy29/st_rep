@@ -31,23 +31,26 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
   protected function _initViewHelpers() { 
       $this->bootstrap('layout');     
        
-      //***layout
-      $layout = $this->getResource('layout'); 
-      $view = $layout->getView(); 
-      $view->doctype('XHTML1_STRICT'); 
-      $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8'); 
+       //***layout
+       $layout = $this->getResource('layout'); 
+       $view = $layout->getView(); 
+       $view->doctype('XHTML1_STRICT'); 
+       $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8'); 
 
-      $view->headTitle('Inusual'); 
+       $view->headTitle('Inusual'); 
 
-      //*** the css here
-      $view->headLink(array('rel'  => 'favicon','href' => '/img/favicon.ico',), 'PREPEND')
+       //*** the css here
+       $view->headLink(array('rel'  => 'favicon','href' => '/img/favicon.ico',), 'PREPEND')
             ->appendStylesheet('/st_rep/st/public/css/estilo.css')
-            ->prependStylesheet( '/st_rep/st/public/css/ui-lightness/jquery-ui-1.9.2.custom.min.css', 'screen',true,array('id' => 'my_stylesheet'));
-            
+            ->prependStylesheet( '/st_rep/st/public/css/ui-lightness/jquery-ui-1.10.0.custom.min.css', 'screen',true,array('id' => 'my_stylesheet'));
+          
+        //*** the js here 
        $view->headScript()->appendFile('/st_rep/st/public/js/jquery.min.js');
     	 $view->headScript()->appendFile('/st_rep/st/public/js/jquery.dataTables.min.js');
        $view->headScript()->appendFile('/st_rep/st/public/js/jquery-ui-1.9.2.custom.min.js');
+       $view->headScript()->appendFile('/st_rep/st/public/js/main.js');
 
+       //*** the mesage js here
        $view->headScript()->appendFile('/st_rep/st/public/js/mesage/jquery.noty.js');
        $view->headScript()->appendFile('/st_rep/st/public/js/mesage/topRight.js');
        $view->headScript()->appendFile('/st_rep/st/public/js/mesage/center.js');
@@ -62,36 +65,43 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
        
     }
   
+  /*
+  *Helper path
+  */
+  protected function _initHelperPath(){
 
-      protected function _initHelperPath(){
+    //*** controller helper path
+    Zend_Controller_Action_HelperBroker::addPath(APPLICATION_PATH .'/controllers/helpers');
 
-         Zend_Controller_Action_HelperBroker::addPath(APPLICATION_PATH .'/controllers/helpers');
-      }
+    //*** view helper path
+    $layout = new Zend_Layout();
+    $view = $layout->getView(); 
+    $view->addHelperPath(APPLICATION_PATH . "/views/helpers");
+
+  }
 
   protected function _initAutoload() {
 
       //*** load the preDispacher
-      /*$front = Zend_Controller_Front::getInstance();
-      $front->registerPlugin(new Zend_Controller_Plugin_CheckAccess());*/
-    }
+      $front = Zend_Controller_Front::getInstance();
+      $front->registerPlugin(new Zend_Controller_Plugin_CheckAccess());
+  }
 
   
   protected function _initViewResources() {
-
      //Zend_Layout::startMvc();
-     }
+  }
 
   /*
   *load Helper
   */
   protected function _initResourceLoader(){
 
-    $loader = $this->getResourceLoader();
+   /* $loader = $this->getResourceLoader();
     $loader->addResourceType('helper', 'helpers', 'Helper');
     $loader->addResourceType('widget', 'widgets', 'Widget');
 
-    return $loader;
+    return $loader;*/
     }
-
 }
 

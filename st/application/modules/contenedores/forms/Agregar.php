@@ -11,7 +11,10 @@ class Contenedores_Form_Agregar extends Zend_Form
 		$this->setAction('/st_rep/st/public/contenedores/index/search')->setMethod('post');
 		
 		$group = new Zend_Form_Element_Text('search');
-		$group->setLabel('Serial o Numero de Orden');		
+		//$group->setRequired(true);
+		$group->addValidator('NotEmpty', false, array('messages'=>'No puede ser vacio'));
+		$group->setLabel('Serial o Numero de Orden');	
+
 		$group->setDecorators(array(
                    'ViewHelper',
                    'Description',

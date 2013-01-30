@@ -13,10 +13,12 @@ class Contenedores_Form_Paquete extends Zend_Form
 		$this->addElement($group);
 
 		$group = new Zend_Form_Element_Text('NoGuia');
+		$group->addValidator('NotEmpty', false, array('messages'=>'No puede ser vacio'));
 		$group ->setLabel("Numero de Guia");
 		$this->addElement($group);
 
 		$group = new Zend_Form_Element_Text('Observaciones');
+		$group->addValidator('NotEmpty', false, array('messages'=>'No puede ser vacio'));
 		$group ->setLabel("Observaciones");
 		$this->addElement($group);
 

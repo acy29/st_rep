@@ -14,18 +14,33 @@
 			 		notification("<?php echo $this->msj_notification ?>");
 			 	if( "<?php echo $this->msj_error ?>" != "")
 			 		error("<?php echo $this->msj_error ?>");
+			 	 if( "<?php echo $this->msj_confirm ?>" != "")
+                    confirm("<?php echo $this->msj_confirm ?>");
+                 if( "<?php echo $this->msj_error_op ?>" != "")
+                    error_op("<?php echo $this->msj_error_op ?>");
+
+                //variables leidas por query string
+                <?php if (isset($_GET['msj_notification'])){
+                        echo "notification('".$_GET['msj_notification']."');";
+                } ?>
+
 			});
 		</script>
 
 	</head> 
 	<body>
-		<!--<header>
-			<a href="/st_rep/st/public/login/login/logout">Cerrar Sesión</a>
-			<a href="/st_rep/st/public/login/login/login">Iniciar Sesión</a>
-		</header>-->
-		<section>
+
+		<header class="ui-state-active">
+			<a href="/st_rep/st/public/login/login/logout" class="logout">Cerrar Sesi&#243;n</a>
+			<a href="/st_rep/st/public/login/login/login" class="login">Iniciar Sesi&#243;n</a>
+
+			<?php echo $this->HiUser(); ?>
+		</header>
+		<nav>
+			<?php echo $this->createMenu(); ?>
+		</nav>
+		<section class="ui-widget-content">
 			<?php echo $this->layout()->content; ?>
 		</section>
-		
 	</body> 
 </html>

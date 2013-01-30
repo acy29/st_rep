@@ -1,0 +1,52 @@
+<script type="text/javascript">
+	$(document).ready(function() {
+	    $('#envios').dataTable( {
+	    	"bJQueryUI": true,
+			"sDom": "frtip",
+			"iDisplayLength": 25,
+	        "bAutoWidth": true,
+	        "sDom": 'T<"clear">lfrtip',
+	        "bLengthChange": false,
+	        "bProcessing": false,
+        	"oLanguage": 
+       		{
+              "sUrl": "/st_rep/st/public/util/jquerydatatable.spanish.txt"
+         	},
+	        "sAjaxSource": "envios/json",
+	        "aoColumns" : [
+		        {
+					"sDefaultContent" : "",
+		            "fnRender": function ( o, val ) {      
+		                if (o.aData[0] == null)
+		                        return "";
+		                
+		                a = new Date(o.aData[0].date);
+		                fecha = [a.getDate() > 9 ? (a.getDate()+1) : '0' + a.getDate(),a.getMonth() > 8 ? a.getMonth() + 1 : '0'+ (a.getMonth() + 1), a.getFullYear() ].join('/');
+		                return fecha;                     
+		            }
+		        },
+                {
+                    "class" : "center"
+                },
+                {
+                    "class" : "center"
+                },
+                {
+                    "class" : "center"
+                },
+                {
+                    "class" : "center"
+                },
+                {
+                	"sDefaultContent" : "",
+                  	"fnRender": function ( o, val ) {
+                        return '<a href="listar/imprimir?CodEnvio=' + o.aData[1] + '" target="_blank" >Imprimir listado de Seriales</a>'
+                	}
+                }],
+	    } );
+	} );
+</script>
+<table id="envios" cellpadding="0" cellspacing="0" border="0"  class="display dataTable">
+	<thead><th>Fecha</th><th>CodEnvio</th><th>NoGuia</th><th>NombreCentroDestino</th><th>Transporte</th><th></th></thead>
+	<tbody></tbody>
+</table>

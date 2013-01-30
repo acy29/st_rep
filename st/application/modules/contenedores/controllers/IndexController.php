@@ -65,7 +65,7 @@ class Contenedores_IndexController extends Zend_Controller_Action
         $contenedor=new Contenedores_Model_Contenedor();
         if(sizeof($contenedor->getByCodDestino($rows[0]["CodCentro"]))>0){
             $contenedorFinal=$contenedor->getByCodDestino($rows[0]["CodCentro"]);
-            $this->view->msj_confirm= "Coloque la orden en el contenedor ".$contenedorFinal[0]["CodContenedor"];
+            $this->view->msj_confirm= "Coloque la orden en el contenedor ".$contenedorFinal[0]["NombreContenedor"];
             $form = new Contenedores_Form_CrearPaquete();
             echo $form; 
         }else{
@@ -73,7 +73,7 @@ class Contenedores_IndexController extends Zend_Controller_Action
             if(sizeof($contenedorFinal)<1){
                 $this->view->msj_error_op= "No hay contenedores disponibles, vacie uno e intente de nuevo";
             }else{
-                $this->view->msj_confirm= "Coloque la orden en el contenedor ".$contenedorFinal[0]["CodContenedor"];
+                $this->view->msj_confirm= "Coloque la orden en el contenedor ".$contenedorFinal[0]["NombreContenedor"];
                 $form = new Contenedores_Form_CrearPaquete();
                 echo $form; 
             }

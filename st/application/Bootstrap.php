@@ -87,21 +87,5 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
       $front->registerPlugin(new Zend_Controller_Plugin_CheckAccess());
   }
 
-  
-  protected function _initViewResources() {
-     //Zend_Layout::startMvc();
-  }
-
-  /*
-  *load Helper
-  */
-  protected function _initResourceLoader(){
-
-   /* $loader = $this->getResourceLoader();
-    $loader->addResourceType('helper', 'helpers', 'Helper');
-    $loader->addResourceType('widget', 'widgets', 'Widget');
-
-    return $loader;*/
-    }
 }
 
